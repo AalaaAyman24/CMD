@@ -1,0 +1,7 @@
+C:\Users\KM\source\repos\OS_Project\OS_Project\bin\Debug\OS_Project.exe.config
+C:\Users\KM\source\repos\OS_Project\OS_Project\bin\Debug\OS_Project.exe
+C:\Users\KM\source\repos\OS_Project\OS_Project\bin\Debug\OS_Project.pdb
+C:\Users\KM\source\repos\OS_Project\OS_Project\obj\Debug\OS_Project.csproj.AssemblyReference.cache
+C:\Users\KM\source\repos\OS_Project\OS_Project\obj\Debug\OS_Project.csproj.CoreCompileInputs.cache
+C:\Users\KM\source\repos\OS_Project\OS_Project\obj\Debug\OS_Project.exe
+C:\Users\KM\source\repos\OS_Project\OS_Project\obj\Debug\OS_Project.pdb
