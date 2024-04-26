@@ -12,7 +12,7 @@ This C# project implements a virtual disk management system with a FAT (File All
 * **FAT Table Visualization** : Visual representation of the FAT table for allocation status.
 
 # Technologies Used:
-**C#**: Core programming language used for the project.
-**.NET Framework**: Leveraging .NET for system and file I/O operations.
-**Console Application**: Project implemented as a command-line interface application.
-**Visual Studio**: IDE used for development and debugging.
+* **C#**: Core programming language used for the project.
+* **.NET Framework**: Leveraging .NET for system and file I/O operations.
+* **Console Application**: Project implemented as a command-line interface application.
+* **Visual Studio**: IDE used for development and debugging.
