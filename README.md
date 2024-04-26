@@ -16,3 +16,7 @@ This C# project implements a virtual disk management system with a FAT (File All
 * **.NET Framework**: Leveraging .NET for system and file I/O operations.
 * **Console Application**: Project implemented as a command-line interface application.
 * **Visual Studio**: IDE used for development and debugging.
+
+# Additional Information
+For any questions, issues, or suggestions, please feel free to open an issue on GitHub.
+Thank you for using Command Line 2024!
