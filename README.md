@@ -10,7 +10,7 @@ The Virtual File System Simulator project is designed to emulate a basic file sy
   * The file serves as the storage medium for the simulated file system, encapsulating
   directories, files, and metadata.
 
-## 2. File System Operations:
+### 2. File System Operations:
   * **File Creation:** Users can create new files within the virtual file system.
   * **Directory Creation:** Directories (folders) can be created to organize files hierarchically.
   * **File Copying:** Files can be duplicated within the file system.
