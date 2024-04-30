@@ -6,8 +6,8 @@ The Virtual File System Simulator project is designed to emulate a basic file sy
 
 # Key Features:
 * **1.Virtual Disk Representation** :
-  *The virtual disk is represented by a single file (Disk.txt), with a maximum size limit of 1MB.
-  *The file serves as the storage medium for the simulated file system, encapsulating
+  * The virtual disk is represented by a single file (Disk.txt), with a maximum size limit of 1MB.
+  * The file serves as the storage medium for the simulated file system, encapsulating
   directories, files, and metadata.
 
 * **2.FAT Table Management** : Manage file allocation using a FAT table.
