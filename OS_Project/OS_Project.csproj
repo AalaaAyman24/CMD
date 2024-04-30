@@ -47,6 +47,7 @@
     <Compile Include="Directory.cs" />
     <Compile Include="Directory_Entry.cs" />
     <Compile Include="Fat_Table.cs" />
+    <Compile Include="File_Entry.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Virtual_Disk.cs" />

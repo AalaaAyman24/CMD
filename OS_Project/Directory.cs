@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,13 +12,9 @@ namespace OS_Project
         public List<Directory_Entry> directoryTable = new List<Directory_Entry>();
         public Directory parent;
 
- 
-        public Directory() : base()
-        {
-            
-        }
 
-        public Directory(string n,byte bt, int sz, int fc, Directory pt) : base(n, bt, sz, fc)
+        public Directory() : base() { }
+        public Directory(string n, byte bt, int sz, int fc, Directory pt) : base(n, bt, sz, fc)
         {
 
             parent = pt;
@@ -72,15 +69,16 @@ namespace OS_Project
 
                     }
                 }
+
                 Virtual_Disk.Write_Block(blockData, fc);
                 Fat_Table.Set_Value(-1, fc);
-                if(lc != -1)
+                if (lc != -1)
                 {
                     Fat_Table.Set_Value(fc, lc);
                 }
                 lc = fc;
                 fc = Fat_Table.Get_Available_Block();
-                Console.WriteLine(Fat_Table.Get_Value(5));
+                //Console.WriteLine(Fat_Table.Get_Value(5));
 
             }
 
@@ -90,14 +88,14 @@ namespace OS_Project
 
         public void Read_Directory()
         {
-            Console.WriteLine(Fat_Table.Get_Value(5));
+            //Console.WriteLine(Fat_Table.Get_Value(5));
             List<byte> data = new List<byte>();
             List<Directory_Entry> directory_table = new List<Directory_Entry>();
             int fc = first_cluster;
             int nc = Fat_Table.Get_Value(fc);
             data.AddRange(Virtual_Disk.Read_Block(fc));
 
-            while(nc != -1)
+            while (nc != -1)
             {
                 fc = nc;
                 if (first_cluster != -1)
@@ -118,9 +116,9 @@ namespace OS_Project
                         flag = true;
                         break;
                     }
-                    temp[j] = data[i * 32 + j];             
+                    temp[j] = data[i * 32 + j];
                 }
-                if(flag)
+                if (flag)
                 {
                     break;
                 }
@@ -128,24 +126,43 @@ namespace OS_Project
             }
             directoryTable = directory_table;
         }
-        
-        public int Search (string n)
+
+        public int Search(string n)
         {
             string s;
-            for (int i = 0; i < directoryTable.Count; i++) 
+            for (int i = 0; i < directoryTable.Count; i++)
             {
                 s = new string(directoryTable[i].name).TrimEnd('\0');
-                if(s == n.TrimEnd('\0'))
+                if (s == n.TrimEnd('\0'))
                 {
                     return i;
                 }
             }
             return -1;
         }
-        
-        public void Delete()
+
+        public void Delete_Directory(string name)
         {
-            // Not complete
+            if (first_cluster != 0)
+            {
+                int fc = first_cluster;
+                int next = Fat_Table.Get_Value(fc);
+
+                do
+                {
+                    Fat_Table.Set_Value(fc, 0);
+                    fc = next;
+                    if (fc != -1)
+                        next = Fat_Table.Get_Value(fc);
+
+                } while (fc != -1);
+
+                Fat_Table.Write_Fat_Table();
+            }
+            
+            int y = parent.Search(name);
+            parent.directoryTable.RemoveAt(y);
+            parent.Write_Directory();
         }
 
 

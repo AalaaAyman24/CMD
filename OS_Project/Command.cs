@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,6 +26,8 @@ namespace OS_Project
             Console.WriteLine("import         Import text file(s) from your computer.\n");
             Console.WriteLine("export         Export text file(s) to your computer.\n");
         }
+
+
 
         public static void DisplayCommandHelp(string specificCommand)
         {
@@ -53,15 +56,21 @@ namespace OS_Project
             }
         }
 
+
+
         public static void Cls()
         {
             Console.Clear();
         }
 
+
+
         public static void Exit()
         {
             Environment.Exit(0);
         }
+
+
 
         public static void Make_Directory(string name)
         {
@@ -72,9 +81,8 @@ namespace OS_Project
             }
             else
             {
-                Directory_Entry newDir = new Directory_Entry(name,1,0,0);
+                Directory_Entry newDir = new Directory_Entry(name, 1, 0, 0);
                 Program.currentDirectory.directoryTable.Add(newDir);
-                //Directory newDir = new Directory(name, currentDirectory);
                 Program.currentDirectory.Write_Directory();
                 Console.WriteLine("Directory created successfully.");
             }
@@ -95,8 +103,8 @@ namespace OS_Project
                 if (entry.attribute == 1)
                 {
 
-                    Directory newDir = new Directory(name, 1, 0,entry.first_cluster, Program.currentDirectory);
-                    newDir.Delete();
+                    Directory newDir = new Directory(name, 1, 0, entry.first_cluster, Program.currentDirectory);
+                    newDir.Delete_Directory(name);
                     Program.currentDirectory.Write_Directory();
                     Console.WriteLine("Directory deleted successfully.");
                 }
@@ -108,12 +116,76 @@ namespace OS_Project
         }
 
 
+
         public static void Display_Directory()
         {
             Console.WriteLine("Directory Listing:");
             foreach (Directory_Entry entry in Program.currentDirectory.directoryTable)
             {
                 Console.WriteLine(entry.name);
+            }
+        }
+
+
+
+        public static void Rename (string oldName, string newName)
+        {
+            int index_oldName = Program.currentDirectory.Search(oldName);
+            int index_newName = Program.currentDirectory.Search(newName);
+            if (index_oldName != -1)
+            {
+                if (index_newName == -1)
+                {
+                    Directory_Entry entry = Program.currentDirectory.directoryTable[index_oldName];
+
+                    // Update the name 
+                    entry.name = newName.ToCharArray();
+                    Program.currentDirectory.Write_Directory();
+                    Console.WriteLine($"Directory '{oldName}' renamed to '{newName}' successfully.");
+
+                }
+                else
+                {
+                    Console.WriteLine($"Error: '{newName}' is the same as the old name.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Error: The specified name is not a file.");
+            }
+        }
+
+
+
+        public static void Type (string name)
+        {
+            int index = Program.currentDirectory.Search(name);
+            if (index != -1)
+            {
+                // Not_Complete
+            }
+            else
+            {
+                Console.WriteLine("Error: The specified name is not a file.");
+            }
+
+        }
+
+
+        public static void Change_Directory(string name)
+        {
+            int index = Program.currentDirectory.Search(name);
+            if (index != -1)
+            {
+                Directory_Entry entry = Program.currentDirectory.directoryTable[index];
+                Directory newDir = new Directory(name, 1, 0, entry.first_cluster, Program.currentDirectory);
+                Program.currentDirectory =  newDir;
+                // Stopppppp
+
+            }
+            else
+            {
+                Console.WriteLine($"Error: Directory '{name}' not found.");
             }
         }
 

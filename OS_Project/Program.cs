@@ -13,16 +13,18 @@ namespace OS_Project
         public static Directory currentDirectory = new Directory();
         public static string path = "";
 
+        public static object DirectoryCurrent { get; internal set; }
+
         public static void Main(string[] args)
         {
             Virtual_Disk.Initialize();
 
-            Console.WriteLine("Welcome to the Command Line Interpreter! ");
+            // Console.WriteLine("Welcome to the Command Line Interpreter! ");
 
             while (true)
             {
 
-                Console.Write(path + "> ");
+                Console.Write(path + "\\> ");
                 string input = Console.ReadLine().ToLower().Trim();
                 string[] commandParts = input.Split(' ');
                 string command = commandParts.Length > 0 ? commandParts[0] : "";
@@ -42,16 +44,19 @@ namespace OS_Project
                         }
                         break;
 
+
                     case "cls":
                         // cls
                         Command.Cls();
                         break;
+
 
                     case "exit":
                     case "quit":
                         //Exit or quit
                          Command.Exit();
                         break;
+
 
                     case "md":
                         // Make directory
@@ -66,6 +71,7 @@ namespace OS_Project
                         }
                         break;
 
+
                     case "rd":
                         // Remove directory
                         if (commandParts.Length == 2)
@@ -79,9 +85,49 @@ namespace OS_Project
                         }
                         break;
 
+
                     case "dir":
                         // Display directory
                         Command.Display_Directory();
+                        break;
+
+
+                    case "rename":
+                        // Rename file(s)
+                        if (commandParts.Length == 3)
+                        {
+                            Command.Rename(commandParts[1], commandParts[2]);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Usage: rename <oldName> <newName>");
+                        }
+                        break;
+
+
+                    case "type":
+                        // Display the content
+                        if (commandParts.Length == 2)
+                        {
+                            Command.Type(commandParts[1]);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Usage: type <fileName>");
+                        }
+                        break;
+
+
+                    case "cd":
+                        // Changes the current directory
+                        if (commandParts.Length == 1)
+                        {
+                            Console.WriteLine(currentDirectory + "\n");  
+                        }
+                        else if (commandParts.Length == 2)
+                        {
+                            Command.Change_Directory(commandParts[1]);
+                        }
                         break;
 
 

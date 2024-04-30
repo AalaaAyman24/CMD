@@ -15,14 +15,14 @@ namespace OS_Project
         public int first_cluster; // 4 byte
         // Total 32 byte
 
-        public Directory_Entry()  // empty constructor
+        public Directory_Entry()  // Empty constructor
         {
 
         }
         public Directory_Entry(string n, byte attr, int sz, int fc)
         {
             attribute = attr;
-            if (attribute == 0)  // file --> name + extension 
+            if (attribute == 0)  // File --> name + extension 
             {
                 if (n.Length > 11)
                 {
@@ -51,7 +51,7 @@ namespace OS_Project
 
         public byte[] Convert_Directory_Entry()
         {
-            byte[] data = new byte[32]; // a directory entry is 32 byte 
+            byte[] data = new byte[32]; // Directory Entry is 32 byte 
             for (int i = 0; i < name.Length; i++)
             {
                 data[i] = Convert.ToByte(name[i]);  //0:10
