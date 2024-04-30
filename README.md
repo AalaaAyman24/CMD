@@ -1,4 +1,4 @@
-# Command Line 2024
+# fat_project
 Welcome to Command Line GitHub repository!
 
 # Overview:
