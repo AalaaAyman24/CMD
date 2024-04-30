@@ -10,14 +10,21 @@ The Virtual File System Simulator project is designed to emulate a basic file sy
   * The file serves as the storage medium for the simulated file system, encapsulating
   directories, files, and metadata.
 
-## 2. FAT Table Management:
-  * Manage file allocation using a FAT table.
-## 3. File Operations:
-  * CRUD operations (Create, Read, Update, Delete) on files within the virtual disk.
-## 4. Directory Management: 
-  * Support for directories and hierarchical file organization.
-## 5. FAT Table Visualization:
-  * Visual representation of the FAT table for allocation status.
+## 2. File System Operations:
+  * **File Creation:** Users can create new files within the virtual file system.
+  * **Directory Creation:** Directories (folders) can be created to organize files hierarchically.
+  * **File Copying:** Files can be duplicated within the file system.
+  * **File Deletion:** Users can delete files from the virtual disk.
+  * **Directory Deletion:** Users can delete directories from the virtual disk.
+  * **File Renaming:** The system supports renaming of files and directories.
+  * **Listing Content:** Users can list the contents of directories.
+  * **Navigating Directory Structure:** Users can traverse through directories.
+    
+## 3. Implementation Details:
+  * **Directory Structure:** The file system uses a simplified directory structure akin to FAT32, with directories containing entries pointing to file metadata (e.g., name, size, location).
+  * **File Allocation Table (FAT):** A basic implementation of a FAT-like structure manages disk space allocation and file location information.
+  * **Metadata Management:** Each file and directory is associated with metadata (e.g., name, size, location) stored within the virtual disk.
+
 
 # Technologies Used:
 * **C#**: Core programming language used for the project.
