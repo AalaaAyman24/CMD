@@ -5,7 +5,7 @@ Welcome to GitHub repository!
 The Virtual File System Simulator project is designed to emulate a basic file system within a virtual disk represented by a file (Disk.txt).This simulator allows users to perform essential file and directory operations similar to those available in a traditional operating system environment.
 
 # Key Features:
-## 1. Virtual Disk Representation:
+### 1. Virtual Disk Representation:
   * The virtual disk is represented by a single file (Disk.txt), with a maximum size limit of 1MB.
   * The file serves as the storage medium for the simulated file system, encapsulating
   directories, files, and metadata.
@@ -20,7 +20,7 @@ The Virtual File System Simulator project is designed to emulate a basic file sy
   * **Listing Content:** Users can list the contents of directories.
   * **Navigating Directory Structure:** Users can traverse through directories.
     
-## 3. Implementation Details:
+### 3. Implementation Details:
   * **Directory Structure:** The file system uses a simplified directory structure akin to FAT32, with directories containing entries pointing to file metadata (e.g., name, size, location).
   * **File Allocation Table (FAT):** A basic implementation of a FAT-like structure manages disk space allocation and file location information.
   * **Metadata Management:** Each file and directory is associated with metadata (e.g., name, size, location) stored within the virtual disk.
