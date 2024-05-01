@@ -67,6 +67,7 @@ namespace OS_Project
         {
             using (FileStream disk = new FileStream(FileName, FileMode.Open, FileAccess.ReadWrite))
             {
+                disk.Seek(1024 * index, SeekOrigin.Begin); // move cursor to the correct block
                 disk.Write(data, 0, data.Length);  // data.length = 1024
             }
         }
@@ -76,6 +77,7 @@ namespace OS_Project
             byte[] data = new byte[BlockSize];
             using (FileStream disk = new FileStream(FileName, FileMode.Open, FileAccess.ReadWrite))
             {
+                disk.Seek(1024 * index, SeekOrigin.Begin); // move cursor to the correct block
                 disk.Read(data, 0, data.Length);  // data.length = 1024
             }
             return data;

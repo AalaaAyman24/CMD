@@ -150,7 +150,7 @@ namespace OS_Project
 
                 do
                 {
-                    Fat_Table.Set_Value(fc, 0);
+                    Fat_Table.Set_Value(0, fc);
                     fc = next;
                     if (fc != -1)
                         next = Fat_Table.Get_Value(fc);

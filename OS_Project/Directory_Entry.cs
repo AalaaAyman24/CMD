@@ -39,14 +39,16 @@ namespace OS_Project
             }
 
             size = sz;
-            if (fc == 0)
+            /*if (fc == 0)
             {
                 first_cluster = Fat_Table.Get_Available_Block();
             }
             else
             {
                 first_cluster = fc;  //Folder root
-            }
+            }*/
+
+            first_cluster = fc; 
         }
 
         public byte[] Convert_Directory_Entry()

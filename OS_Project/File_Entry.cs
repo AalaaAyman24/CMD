@@ -107,19 +107,19 @@ namespace OS_Project
 
                 do
                 {
-                    Fat_Table.Set_Value(fc, 0);
+                    Fat_Table.Set_Value(0, fc);
                     fc = next;
                     if (fc != -1)
                         next = Fat_Table.Get_Value(fc);
 
-                } while (next != -1);
+                } while (fc != -1);
 
                 Fat_Table.Write_Fat_Table();
             }
-            int y = Search(name);
-            Program.currentDirectory.directoryTable.RemoveAt(y);
-            parent.Write_Directory();
 
+            int y = parent.Search(name);
+            parent.directoryTable.RemoveAt(y);
+            parent.Write_Directory();
         }
 
     }
