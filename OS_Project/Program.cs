@@ -33,15 +33,7 @@ namespace OS_Project
                 string[] commandParts = input.Split(' ');
                 string command = commandParts.Length > 0 ? commandParts[0] : "";
                 string import_path = "", export_path = "";
-                /*if (input.Length > 6)
-                {
-                    import_path = input.Substring(7);
-                }
-
-                if(import_path.Length > 0 && commandParts.Length > 2)
-                {
-                    export_path = import_path.Substring(commandParts[1].Length + 1);
-                }*/
+         
 
                 switch (command)
                 {

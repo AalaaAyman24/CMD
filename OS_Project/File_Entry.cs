@@ -120,6 +120,8 @@ namespace OS_Project
             int y = parent.Search(name);
             parent.directoryTable.RemoveAt(y);
             parent.Write_Directory();
+
+
         }
 
     }
