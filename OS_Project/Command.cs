@@ -176,7 +176,7 @@ namespace OS_Project
             {
                 int fc = Program.currentDirectory.directoryTable[index].first_cluster;
                 int sz = Program.currentDirectory.directoryTable[index].size;
-                File_Entry f = new File_Entry(name, 0, fc, sz, "", Program.currentDirectory);
+                File_Entry f = new File_Entry(name, 0, sz, fc, "", Program.currentDirectory);
                 f.Read_File();
                 Console.WriteLine(f.content);
             }
@@ -198,7 +198,7 @@ namespace OS_Project
             {
                 int fc = Program.currentDirectory.directoryTable[index].first_cluster;
                 int sz = Program.currentDirectory.directoryTable[index].size;
-                File_Entry f = new File_Entry(name, 0, fc, sz, "", Program.currentDirectory);
+                File_Entry f = new File_Entry(name, 0, sz, fc, "", Program.currentDirectory);
                 f.Delete_File(name);
                 Console.WriteLine("File deleted successfully.");
             }
@@ -248,7 +248,7 @@ namespace OS_Project
 
                 if (index == -1)
                 {
-                    File_Entry f = new File_Entry(fileName, 0, fc, size, fileContent, Program.currentDirectory);
+                    File_Entry f = new File_Entry(fileName, 0, size, fc, fileContent, Program.currentDirectory);
                     f.Write_File();
                     Directory_Entry d = new Directory_Entry(fileName, 0, size, f.first_cluster);
                     Program.currentDirectory.directoryTable.Add(d);
@@ -281,7 +281,7 @@ namespace OS_Project
                 {
                     int fc = Program.currentDirectory.directoryTable[index].first_cluster;
                     int sz = Program.currentDirectory.directoryTable[index].size;
-                    File_Entry f = new File_Entry(name, 0, fc, sz, "", Program.currentDirectory);
+                    File_Entry f = new File_Entry(name, 0, sz, fc, "", Program.currentDirectory);
                     f.Read_File();
                     using (StreamWriter sw = new StreamWriter(dest))
                     {

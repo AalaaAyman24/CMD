@@ -9,12 +9,11 @@ namespace OS_Project
 {
     internal class File_Entry : Directory_Entry
     {
-        //public List<Directory_Entry> directoryTable = new List<Directory_Entry>();
         public string content;
         public Directory parent;
 
 
-        public File_Entry(string n, byte attr, int fc, int sz, string ct = "", Directory pt = null) : base(n, attr, fc, sz)
+        public File_Entry(string n, byte attr, int sz, int fc, string ct = "", Directory pt = null) : base(n, attr, sz, fc)
         {
             parent = pt;
             content = ct;
@@ -23,40 +22,7 @@ namespace OS_Project
         public void Write_File()
         {
 
-            /*  double totalBlocks = Math.Ceiling(content.Length / 1024.0);
-              int fc = first_cluster;
-              int lc = -1;
-
-
-              byte[] blockData = new byte[1024];
-              for (int i = 0; i < totalBlocks; i++)
-              {
-                  for (int j = i * 1024, k = 0; k < 1024; j++, k++)
-                  {
-                      if (j < content.Length)
-                      {
-                          blockData[k] = (byte)content[j];
-                      }
-                      else
-                      {
-                          blockData[k] = (byte)'#';
-                      }
-                  }
-              }
-
-              Virtual_Disk.Write_Block(blockData, fc);
-              Fat_Table.Set_Value(-1, fc);
-              if (lc != -1)
-              {
-                  Fat_Table.Set_Value(fc, lc);
-              }
-
-              lc = fc;  // Remove 
-              fc = Fat_Table.Get_Available_Block(); // Remove
-
-              // Write the new fat table
-              Fat_Table.Write_Fat_Table();
-              */
+           
             int contentLength = content.Length;
             int totalBlocks = (int)Math.Ceiling(content.Length / 1024.0);
             int fullBlocks = content.Length / 1024;
@@ -144,21 +110,6 @@ namespace OS_Project
             }
 
         }
-
-       /* public int Search(string n)
-        {
-            string s;
-            for (int i = 0; i < directoryTable.Count; i++)
-            {
-                s = new string(directoryTable[i].name).TrimEnd('\0');
-                if (s == n.TrimEnd('\0'))
-                {
-                    return i;
-                }
-            }
-            return -1;
-        }*/
-
 
         public void Delete_File(string name)
         {
