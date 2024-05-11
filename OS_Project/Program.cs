@@ -21,6 +21,8 @@ namespace OS_Project
         {
             Virtual_Disk.Initialize();
 
+
+
             // Console.WriteLine("Welcome to the Command Line Interpreter! ");
 
             while (true)
@@ -30,6 +32,16 @@ namespace OS_Project
                 string input = Console.ReadLine().ToLower().Trim();
                 string[] commandParts = input.Split(' ');
                 string command = commandParts.Length > 0 ? commandParts[0] : "";
+                string import_path = "", export_path = "";
+                /*if (input.Length > 6)
+                {
+                    import_path = input.Substring(7);
+                }
+
+                if(import_path.Length > 0 && commandParts.Length > 2)
+                {
+                    export_path = import_path.Substring(commandParts[1].Length + 1);
+                }*/
 
                 switch (command)
                 {
@@ -166,13 +178,21 @@ namespace OS_Project
 
                     case "import":
                         //Import text file(s)
-                        Command.Import(path);
+                        //Command.Import(import_path);
+                        if (commandParts.Length == 2)
+                        {
+                            Command.Import(commandParts[1]);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Usage: type <path>");
+                        }
                         break;
 
 
                     case "export":
                         //Export text file(s)
-                        Command.Export(commandParts[1], path);
+                        Command.Export(commandParts[1], export_path);
                         break;
 
 

@@ -192,6 +192,7 @@ namespace OS_Project
 
         public static void Delete_File(string name) //del
         {
+            
             int index = Program.currentDirectory.Search(name);
             if (index != -1)
             {
@@ -206,6 +207,8 @@ namespace OS_Project
             {
                 Console.WriteLine("Error: The specified name is not a file.");
             }
+         
+
         }
 
 
@@ -232,6 +235,7 @@ namespace OS_Project
 
         public static void Import(string path)  //import 
         {
+            Console.WriteLine(path);
             if (System.IO.File.Exists(path))
             {
 
