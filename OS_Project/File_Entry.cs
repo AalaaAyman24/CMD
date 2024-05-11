@@ -22,7 +22,6 @@ namespace OS_Project
         public void Write_File()
         {
 
-           
             int contentLength = content.Length;
             int totalBlocks = (int)Math.Ceiling(content.Length / 1024.0);
             int fullBlocks = content.Length / 1024;
@@ -102,13 +101,19 @@ namespace OS_Project
                     nc = Fat_Table.Get_Value(fc);
                 }
             }
+            
 
             for (int i = 0; i < data.Count; i++)
             {
+                if (data[i] == (byte)'#')
+                {
+
+                    break;
+                }
+
                 content += (char)data[i];
 
             }
-
         }
 
         public void Delete_File(string name)

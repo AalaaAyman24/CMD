@@ -36,7 +36,8 @@ namespace OS_Project
             }
 
             // int totalBytes = 32 * directoryTable.Count;
-            int totalBlocks = (int)Math.Ceiling(directory_table.Length / 1024.0);
+            int mx = Math.Max(directory_table.Length, 1);
+            int totalBlocks = (int)Math.Ceiling(mx / 1024.0);
             int fullBlocks = directory_table.Length / 1024;
             int remainder = directory_table.Length % 1024;
 

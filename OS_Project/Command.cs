@@ -178,6 +178,7 @@ namespace OS_Project
                 int sz = Program.currentDirectory.directoryTable[index].size;
                 File_Entry f = new File_Entry(name, 0, sz, fc, "", Program.currentDirectory);
                 f.Read_File();
+
                 Console.WriteLine(f.content);
             }
             else
