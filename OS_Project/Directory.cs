@@ -40,7 +40,15 @@ namespace OS_Project
             int fullBlocks = directory_table.Length / 1024;
             int remainder = directory_table.Length % 1024;
 
-            int fc = first_cluster;
+            int fc;
+            if (first_cluster != 0)
+                fc = first_cluster;
+            else
+            {
+                fc = Fat_Table.Get_Available_Block();
+                first_cluster = fc;
+            }
+
             int lc = -1;
 
             for (int i = 0; i < totalBlocks; i++)

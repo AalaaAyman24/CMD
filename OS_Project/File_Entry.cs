@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Authentication.ExtendedProtection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,7 +9,7 @@ namespace OS_Project
 {
     internal class File_Entry : Directory_Entry
     {
-        public List<Directory_Entry> directoryTable = new List<Directory_Entry>();
+        //public List<Directory_Entry> directoryTable = new List<Directory_Entry>();
         public string content;
         public Directory parent;
 
@@ -22,40 +23,101 @@ namespace OS_Project
         public void Write_File()
         {
 
-            double totalBlocks = Math.Ceiling(content.Length / 1024.0);
-            int fc = first_cluster;
+            /*  double totalBlocks = Math.Ceiling(content.Length / 1024.0);
+              int fc = first_cluster;
+              int lc = -1;
+
+
+              byte[] blockData = new byte[1024];
+              for (int i = 0; i < totalBlocks; i++)
+              {
+                  for (int j = i * 1024, k = 0; k < 1024; j++, k++)
+                  {
+                      if (j < content.Length)
+                      {
+                          blockData[k] = (byte)content[j];
+                      }
+                      else
+                      {
+                          blockData[k] = (byte)'#';
+                      }
+                  }
+              }
+
+              Virtual_Disk.Write_Block(blockData, fc);
+              Fat_Table.Set_Value(-1, fc);
+              if (lc != -1)
+              {
+                  Fat_Table.Set_Value(fc, lc);
+              }
+
+              lc = fc;  // Remove 
+              fc = Fat_Table.Get_Available_Block(); // Remove
+
+              // Write the new fat table
+              Fat_Table.Write_Fat_Table();
+              */
+            int contentLength = content.Length;
+            int totalBlocks = (int)Math.Ceiling(content.Length / 1024.0);
+            int fullBlocks = content.Length / 1024;
+            int remainder = content.Length % 1024;
+
+
+            int fc;
+            if (first_cluster != 0)
+                fc = first_cluster;
+            else
+            {
+                fc = Fat_Table.Get_Available_Block();
+                first_cluster = fc;
+            }
+
             int lc = -1;
 
-
-            byte[] blockData = new byte[1024];
             for (int i = 0; i < totalBlocks; i++)
             {
-                for (int j = i * 1024, k = 0; k < 1024; j++, k++)
+                byte[] blockData = new byte[1024];
+
+                if (i < fullBlocks)
                 {
-                    if (j < content.Length)
+                   
+                    for (int j = 0; j < 1024; j++)
                     {
-                        blockData[k] = (byte)content[j];
-                    }
-                    else
-                    {
-                        blockData[k] = (byte)'#';
+                        blockData[j] = (byte)content[i * 1024 + j];
                     }
                 }
+                else
+                {
+                    
+                    int start = 1024 * fullBlocks;
+                    for (int j = 0; j < 1024; j++)
+                    {
+                        if (j < remainder)
+                        {
+                            blockData[j] = (byte)content[start + j];
+                        }
+                        else
+                        {
+                            blockData[j] = (byte)'#'; 
+                        }
+                    }
+                }
+                Virtual_Disk.Write_Block(blockData, fc);
+                Fat_Table.Set_Value(-1, fc);
+                if (lc != -1)
+                {
+                    Fat_Table.Set_Value(fc, lc);
+                }
+                lc = fc;
+                fc = Fat_Table.Get_Available_Block();
+                //Console.WriteLine(Fat_Table.Get_Value(5));
             }
+        
+        // Write the new fat table
+        Fat_Table.Write_Fat_Table();
+           
+    }
 
-            Virtual_Disk.Write_Block(blockData, fc);
-            Fat_Table.Set_Value(-1, fc);
-            if (lc != -1)
-            {
-                Fat_Table.Set_Value(fc, lc);
-            }
-
-            lc = fc;  // Remove 
-            fc = Fat_Table.Get_Available_Block(); // Remove
-
-            // Write the new fat table
-            Fat_Table.Write_Fat_Table();
-        }
 
         public void Read_File()
         {
@@ -83,7 +145,7 @@ namespace OS_Project
 
         }
 
-        public int Search(string n)
+       /* public int Search(string n)
         {
             string s;
             for (int i = 0; i < directoryTable.Count; i++)
@@ -95,7 +157,7 @@ namespace OS_Project
                 }
             }
             return -1;
-        }
+        }*/
 
 
         public void Delete_File(string name)
