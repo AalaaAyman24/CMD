@@ -167,5 +167,18 @@ namespace OS_Project
 
 
 
+        public void Update_Content (Directory_Entry d)
+        {
+            string file_name = new string(d.name);
+            Read_Directory();
+            int index = Search(file_name);
+            if (index != -1)
+            { 
+                directoryTable.RemoveAt(index);
+                directoryTable.Insert(index, d);
+            }
+            Write_Directory();
+        }
+
     }
 }

@@ -1,15 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Remoting.Contexts;
+using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Linq;
+using static System.Net.WebRequestMethods;
 
 namespace OS_Project
 {
     internal class Command
     {
-        public static void DisplayAllCommandsHelp()
+        public static void DisplayAllCommandsHelp()  //help
         {
             Console.WriteLine("Available commands:\n");
             Console.WriteLine("cd             Displays the name of or changes the current directory.\n");
@@ -58,21 +63,21 @@ namespace OS_Project
 
 
 
-        public static void Cls()
+        public static void Cls() //cls
         {
             Console.Clear();
         }
 
 
 
-        public static void Exit()
+        public static void Exit() //exit
         {
             Environment.Exit(0);
         }
 
 
 
-        public static void Make_Directory(string name)
+        public static void Make_Directory(string name)  //md
         {
             int index = Program.currentDirectory.Search(name);
             if (index != -1)
@@ -84,13 +89,19 @@ namespace OS_Project
                 Directory_Entry newDir = new Directory_Entry(name, 1, 0, 0);
                 Program.currentDirectory.directoryTable.Add(newDir);
                 Program.currentDirectory.Write_Directory();
+
+                if (Program.currentDirectory.parent != null)
+                {
+                    Program.currentDirectory.parent.Update_Content(Program.currentDirectory.Get_Directory_Entry());
+                }
+
                 Console.WriteLine("Directory created successfully.");
             }
         }
 
 
 
-        public static void Remove_Directory(string name)
+        public static void Remove_Directory(string name)  // rd
         {
             int index = Program.currentDirectory.Search(name);
             if (index == -1)
@@ -117,7 +128,7 @@ namespace OS_Project
 
 
 
-        public static void Display_Directory()
+        public static void Display_Directory()  //dir
         {
             Console.WriteLine("Directory Listing:");
             foreach (Directory_Entry entry in Program.currentDirectory.directoryTable)
@@ -128,7 +139,7 @@ namespace OS_Project
 
 
 
-        public static void Rename (string oldName, string newName)
+        public static void Rename(string oldName, string newName)  //rename
         {
             int index_oldName = Program.currentDirectory.Search(oldName);
             int index_newName = Program.currentDirectory.Search(newName);
@@ -157,12 +168,17 @@ namespace OS_Project
 
 
 
-        public static void Type (string name)
+
+        public static void Type(string name) //type
         {
             int index = Program.currentDirectory.Search(name);
             if (index != -1)
             {
-                // Not_Complete
+                int fc = Program.currentDirectory.directoryTable[index].first_cluster;
+                int sz = Program.currentDirectory.directoryTable[index].size;
+                File_Entry f = new File_Entry(name, 0, fc, sz, "", Program.currentDirectory);
+                f.Read_File();
+                Console.WriteLine(f.content);
             }
             else
             {
@@ -172,20 +188,153 @@ namespace OS_Project
         }
 
 
-        public static void Change_Directory(string name)
+
+
+        public static void Delete_File(string name) //del
+        {
+            int index = Program.currentDirectory.Search(name);
+            if (index != -1)
+            {
+                int fc = Program.currentDirectory.directoryTable[index].first_cluster;
+                int sz = Program.currentDirectory.directoryTable[index].size;
+                File_Entry f = new File_Entry(name, 0, fc, sz, "", Program.currentDirectory);
+                f.Delete_File(name);
+                Console.WriteLine("File deleted successfully.");
+            }
+
+            else
+            {
+                Console.WriteLine("Error: The specified name is not a file.");
+            }
+        }
+
+
+
+        public static void Change_Directory(string name)  //cd
         {
             int index = Program.currentDirectory.Search(name);
             if (index != -1)
             {
                 Directory_Entry entry = Program.currentDirectory.directoryTable[index];
                 Directory newDir = new Directory(name, 1, 0, entry.first_cluster, Program.currentDirectory);
-                Program.currentDirectory =  newDir;
-                // Stopppppp
-
+                Program.currentDirectory = newDir;
+                Program.path = "\\"  + newDir.name;
+                newDir.Read_Directory();
+               
             }
             else
             {
                 Console.WriteLine($"Error: Directory '{name}' not found.");
+            }
+        }
+
+
+
+        public static void Import(string path)  //import 
+        {
+            if (System.IO.File.Exists(path))
+            {
+
+                string[] pathParts = path.Split('\\'); // Split the path(extract name & size)
+                string fileName = pathParts[pathParts.Length - 1];
+                string fileContent = System.IO.File.ReadAllText(path);
+                int size = fileContent.Length;
+                int index = Program.currentDirectory.Search(fileName);
+                int fc = 0;
+
+                if (index == -1)
+                {
+                    File_Entry f = new File_Entry(fileName, 0, fc, size, fileContent, Program.currentDirectory);
+                    f.Write_File();
+                    Directory_Entry d = new Directory_Entry(fileName, 0, size, f.first_cluster);
+                    Program.currentDirectory.directoryTable.Add(d);
+                    Program.currentDirectory.Write_Directory();
+
+                    if (Program.currentDirectory.parent != null)
+                    {
+                        Program.currentDirectory.parent.Update_Content(Program.currentDirectory.Get_Directory_Entry());
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Error: File with the same name already exists.");
+                }
+            }
+            else
+            {
+                Console.WriteLine("Error: The specified name is not a file.");
+            }
+
+        }
+
+
+        public static void  Export(string name, string dest)  //export 
+        {
+            int index = Program.currentDirectory.Search(name);
+            if(index == -1) 
+            {
+                if (System.IO.File.Exists(dest))
+                {
+                    int fc = Program.currentDirectory.directoryTable[index].first_cluster;
+                    int sz = Program.currentDirectory.directoryTable[index].size;
+                    File_Entry f = new File_Entry(name, 0, fc, sz, "", Program.currentDirectory);
+                    f.Read_File();
+                    using (StreamWriter sw = new StreamWriter(dest))
+                    {
+                        sw.WriteLine(f.content);
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("File not found at the specified path.");
+                }
+
+            }
+            else
+            {
+                Console.WriteLine("Error: The specified name is not a file.");
+            }
+        }
+
+
+        public static void Copy (string src, string dest)  //copy
+        {
+            string[] pathParts = dest.Split('\\');
+            int index_src = Program.currentDirectory.Search(src);
+            int index_dest = Program.currentDirectory.Search(pathParts[0]);
+            if (index_src == -1)
+            {
+                Console.WriteLine($"Error: Source file '{src}' not found.");
+                return;
+            }
+
+            if (index_dest == -1)
+            {
+                Console.WriteLine($"Error: Destination directory '{dest}' not found.");
+                return;
+            }
+            if (index_src != -1)
+            {
+                int fc = Program.currentDirectory.directoryTable[index_dest].first_cluster;
+                Directory d = new Directory(dest, 1, 0, fc, Program.currentDirectory);
+                d.Read_Directory();
+                Directory_Entry de = Program.currentDirectory.directoryTable[index_src];
+                int indx3 = d.Search(src);
+                if (indx3 != -1)
+                {
+                    Console.WriteLine($"Error: File '{src}' already exists in '{dest}'.");
+                    return;
+                }
+                d.directoryTable.Add(de);
+                d.Write_Directory();
+                if (d.parent != null)
+                {
+                    d.parent.Update_Content(d.Get_Directory_Entry());
+                }
+            }
+            else
+            {
+                Console.WriteLine("Error: Destination directory not found.");
             }
         }
 

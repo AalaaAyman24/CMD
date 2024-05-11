@@ -39,14 +39,6 @@ namespace OS_Project
             }
 
             size = sz;
-            /*if (fc == 0)
-            {
-                first_cluster = Fat_Table.Get_Available_Block();
-            }
-            else
-            {
-                first_cluster = fc;  //Folder root
-            }*/
 
             first_cluster = fc; 
         }
@@ -108,6 +100,19 @@ namespace OS_Project
             }
             de.first_cluster = BitConverter.ToInt32(temp, 0);
             return de;
+        }
+
+        public Directory_Entry Get_Directory_Entry()
+        {
+            Directory_Entry d = new Directory_Entry();
+            d.name = name;
+            d.attribute = attribute;
+            d.empty = empty;    
+            d.first_cluster = first_cluster;
+            d.size = size;
+
+            return d;
+
         }
 
 

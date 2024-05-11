@@ -10,8 +10,10 @@ namespace OS_Project
 {
     internal class Program
     {
+        
         public static Directory currentDirectory = new Directory();
         public static string path = "";
+        internal static object current;
 
         public static object DirectoryCurrent { get; internal set; }
 
@@ -120,18 +122,63 @@ namespace OS_Project
 
                     case "cd":
                         // Changes the current directory
-                        if (commandParts.Length == 1)
+                        if (commandParts.Length == 1 )
                         {
                             Console.WriteLine(currentDirectory + "\n");  
                         }
-                        else if (commandParts.Length == 2)
+                        else if (commandParts.Length == 2 && commandParts[1] != "..")
                         {
                             Command.Change_Directory(commandParts[1]);
                         }
                         break;
 
 
+
+                    case "copy":
+                        // Copies one or more files to another location
+                        if (commandParts.Length == 3)
+                        {
+                            string src = commandParts[1];
+                            string dest = commandParts[2];
+
+                            Command.Copy(src, dest);
+                            Console.WriteLine($"Copied '{src}' to '{dest}'.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Usage: copy <source_file> <destination_file>");
+                        }
+                        break;
+
+                    case "del":
+                        //Deletes one or more files.
+                        if (commandParts.Length == 2)
+                        {
+                            string fileName = commandParts[1];
+                            Command.Delete_File(fileName);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Usage: del <file_name>");
+                        }
+                        break;
+
+
+                    case "import":
+                        //Import text file(s)
+                        Command.Import(path);
+                        break;
+
+
+                    case "export":
+                        //Export text file(s)
+                        Command.Export(commandParts[1], path);
+                        break;
+
+
+
                     default:
+                        
                         Console.WriteLine("Invalid command.");
                         break;
                 }
