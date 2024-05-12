@@ -32,8 +32,7 @@ namespace OS_Project
                 string input = Console.ReadLine().ToLower().Trim();
                 string[] commandParts = input.Split(' ');
                 string command = commandParts.Length > 0 ? commandParts[0] : "";
-                string import_path = "", export_path = "";
-         
+              
 
                 switch (command)
                 {
@@ -130,7 +129,7 @@ namespace OS_Project
                         {
                             Console.WriteLine(currentDirectory + "\n");  
                         }
-                        else if (commandParts.Length == 2 && commandParts[1] != "..")
+                        else if (commandParts.Length == 2)
                         {
                             Command.Change_Directory(commandParts[1]);
                         }
@@ -170,7 +169,6 @@ namespace OS_Project
 
                     case "import":
                         //Import text file(s)
-                        //Command.Import(import_path);
                         if (commandParts.Length == 2)
                         {
                             Command.Import(commandParts[1]);
@@ -181,13 +179,19 @@ namespace OS_Project
                         }
                         break;
 
-
-                    case "export":
+                    
+                       case "export":
                         //Export text file(s)
-                        Command.Export(commandParts[1], export_path);
-                        break;
-
-
+                       if (commandParts.Length == 3)
+                       {
+                            Command.Export(commandParts[1], commandParts[2]);
+                       }
+                       else
+                       {
+                           Console.WriteLine("Usage: export <source> <destination>");
+                       }
+                       break;
+                   
 
                     default:
                         

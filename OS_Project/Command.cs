@@ -216,22 +216,40 @@ namespace OS_Project
 
         public static void Change_Directory(string name)  //cd
         {
-            int index = Program.currentDirectory.Search(name);
-            if (index != -1)
+            if (name == "..")
             {
-                Directory_Entry entry = Program.currentDirectory.directoryTable[index];
-                Directory newDir = new Directory(name, 1, 0, entry.first_cluster, Program.currentDirectory);
-                Program.currentDirectory = newDir;
-                Program.path = "\\"  + newDir.name;
-                newDir.Read_Directory();
-               
+                if (Program.currentDirectory.parent != null)
+                {
+                    Program.currentDirectory = Program.currentDirectory.parent;
+                    int index_slash = Program.path.LastIndexOf("\\");
+                    Program.path = Program.path.Substring(0, index_slash);
+                    Console.WriteLine($"Changed to parent directory: {Program.currentDirectory}");
+                }
+                else
+                {
+                    Console.WriteLine("Already in the root directory.");
+                }
             }
             else
             {
-                Console.WriteLine($"Error: Directory '{name}' not found.");
+                int index = Program.currentDirectory.Search(name);
+                if (index != -1)
+                {
+                    Directory_Entry entry = Program.currentDirectory.directoryTable[index];
+                    Directory newDir = new Directory(name, 1, 0, entry.first_cluster, Program.currentDirectory);
+                    Program.currentDirectory = newDir;
+                    Program.path += "\\" + name;
+                    Program.currentDirectory.Read_Directory();
+
+                }
+                else
+                {
+                    Console.WriteLine($"Error: Directory '{name}' not found.");
+                }
             }
         }
 
+        
 
 
         public static void Import(string path)  //import 
@@ -275,16 +293,20 @@ namespace OS_Project
 
         public static void  Export(string name, string dest)  //export 
         {
+            Console.WriteLine(name);
+            Console.WriteLine(dest);
+
             int index = Program.currentDirectory.Search(name);
-            if(index == -1) 
+            if(index != -1) 
             {
-                if (System.IO.File.Exists(dest))
+
+                if (System.IO.Directory.Exists(dest))
                 {
                     int fc = Program.currentDirectory.directoryTable[index].first_cluster;
                     int sz = Program.currentDirectory.directoryTable[index].size;
                     File_Entry f = new File_Entry(name, 0, sz, fc, "", Program.currentDirectory);
                     f.Read_File();
-                    using (StreamWriter sw = new StreamWriter(dest))
+                    using (StreamWriter sw = new StreamWriter(dest + '\\' + name))
                     {
                         sw.WriteLine(f.content);
                     }
@@ -345,3 +367,7 @@ namespace OS_Project
 
     }
 }
+
+
+
+
