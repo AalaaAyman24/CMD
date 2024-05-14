@@ -223,7 +223,7 @@ namespace OS_Project
                     Program.currentDirectory = Program.currentDirectory.parent;
                     int index_slash = Program.path.LastIndexOf("\\");
                     Program.path = Program.path.Substring(0, index_slash);
-                    Console.WriteLine($"Changed to parent directory: {Program.currentDirectory}");
+                    Console.WriteLine("Changed to parent directory: " + new string(Program.currentDirectory.name));
                 }
                 else
                 {
@@ -324,64 +324,45 @@ namespace OS_Project
         }
 
 
-
-        public static void Copy(string src, string dest)
+        public static void Copy(string src, string dest)  //copy
         {
-            //Console.WriteLine(src);
-            //Console.WriteLine(dest);
-
+            string[] pathParts = dest.Split('\\');
             int index_src = Program.currentDirectory.Search(src);
+            int index_dest = Program.currentDirectory.Search(pathParts[0]);
+            if (index_src == -1)
+            {
+                Console.WriteLine($"Error: Source file '{src}' not found.");
+                return;
+            }
 
+            if (index_dest == -1)
+            {
+                Console.WriteLine($"Error: Destination directory '{dest}' not found.");
+                return;
+            }
             if (index_src != -1)
             {
-                if (!System.IO.Directory.Exists(dest))
+                int fc = Program.currentDirectory.directoryTable[index_dest].first_cluster;
+                Directory d = new Directory(dest, 1, 0, fc, Program.currentDirectory);
+                d.Read_Directory();
+                Directory_Entry de = Program.currentDirectory.directoryTable[index_src];
+                int indx3 = d.Search(src);
+                if (indx3 != -1)
                 {
-                    Console.WriteLine("Destination directory does not exist.");
+                    Console.WriteLine($"Error: File '{src}' already exists in '{dest}'.");
                     return;
                 }
-                string[] arr = dest.Split('\\');
-                string name;
-                name = arr[arr.Length - 1];
-
-                int index_dest = Program.currentDirectory.Search(name);
-                if (index_dest == -1)   // search in the dest for the file’s name
+                d.directoryTable.Add(de);
+                d.Write_Directory();
+                if (d.parent != null)
                 {
-
-                    if (dest != Program.currentDirectory.name.ToString())
-                    {
-                        int fc = Program.currentDirectory.directoryTable[index_src].first_cluster;
-                        Directory dir = new Directory(dest, 1, 0, fc, Program.currentDirectory.parent);
-                        dir.Read_Directory();
-
-                        Directory_Entry de = Program.currentDirectory.directoryTable[index_src];
-                        dir.directoryTable.Add(de);
-                        dir.Write_Directory();
-
-                        if (dir.parent != null)
-                        {
-                            dir.parent.Update_Content(dir.Get_Directory_Entry());
-                        }
-
-                        Console.WriteLine("File successfully copied.");
-
-                    }
-                    else
-                    {
-                        Console.WriteLine("Error: Source and destination paths cannot be the same.");
-                    }
-
+                    d.parent.Update_Content(d.Get_Directory_Entry());
                 }
-                else
-                {
-                    Console.WriteLine("Error: A file with the same name already exists in the destination directory.");
-                }
-
             }
             else
             {
-                Console.WriteLine("Error: File with the specified name not found.");
+                Console.WriteLine("Error: Destination directory not found.");
             }
-
         }
     }
 }
