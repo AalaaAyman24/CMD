@@ -95,47 +95,51 @@ namespace OS_Project
             Fat_Table.Write_Fat_Table();
         }
 
+      
         public void Read_Directory()
         {
-            //Console.WriteLine(Fat_Table.Get_Value(5));
-            List<byte> data = new List<byte>();
-            List<Directory_Entry> directory_table = new List<Directory_Entry>();
-            int fc = first_cluster;
-            int nc = Fat_Table.Get_Value(fc);
-            data.AddRange(Virtual_Disk.Read_Block(fc));
-
-            while (nc != -1)
+            if (first_cluster != 0)
             {
-                fc = nc;
-                if (first_cluster != -1)
-                {
-                    data.AddRange(Virtual_Disk.Read_Block(fc));
-                    nc = Fat_Table.Get_Value(fc);
-                }
-            }
+                //Console.WriteLine(Fat_Table.Get_Value(5));
+                List<byte> data = new List<byte>();
+                List<Directory_Entry> directory_table = new List<Directory_Entry>();
+                int fc = first_cluster;
+                int nc = Fat_Table.Get_Value(fc);
+                data.AddRange(Virtual_Disk.Read_Block(fc));
 
-            bool flag = false;
-            for (int i = 0; i < data.Count / 32; i++)
-            {
-                byte[] temp = new byte[32];
-                for (int j = 0; j < 32; j++)
+                while (nc != -1)
                 {
-                    if (data[i * 32 + j] == (byte)'#')
+                    fc = nc;
+                    if (first_cluster != -1)
                     {
-                        flag = true;
+                        data.AddRange(Virtual_Disk.Read_Block(fc));
+                        nc = Fat_Table.Get_Value(fc);
+                    }
+                }
+
+                bool flag = false;
+                for (int i = 0; i < data.Count / 32; i++)
+                {
+                    byte[] temp = new byte[32];
+                    for (int j = 0; j < 32; j++)
+                    {
+                        if (data[i * 32 + j] == (byte)'#')
+                        {
+                            flag = true;
+                            break;
+                        }
+                        temp[j] = data[i * 32 + j];
+                    }
+                    if (flag)
+                    {
                         break;
                     }
-                    temp[j] = data[i * 32 + j];
+                    directory_table.Add(Get_Directory_Entry(temp));
                 }
-                if (flag)
-                {
-                    break;
-                }
-                directory_table.Add(Get_Directory_Entry(temp));
+                directoryTable = directory_table;
             }
-            directoryTable = directory_table;
         }
-
+    
         public int Search(string n)
         {
             string s;
@@ -148,6 +152,7 @@ namespace OS_Project
                 }
             }
             return -1;
+
         }
 
         public void Delete_Directory(string name)

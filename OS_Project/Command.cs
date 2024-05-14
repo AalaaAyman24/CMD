@@ -327,8 +327,8 @@ namespace OS_Project
 
         public static void Copy(string src, string dest)
         {
-            Console.WriteLine(src);
-            Console.WriteLine(dest);
+            //Console.WriteLine(src);
+            //Console.WriteLine(dest);
 
             int index_src = Program.currentDirectory.Search(src);
 
