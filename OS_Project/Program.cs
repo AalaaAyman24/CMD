@@ -145,7 +145,7 @@ namespace OS_Project
                             string dest = commandParts[2];
 
                             Command.Copy(src, dest);
-                            Console.WriteLine($"Copied '{src}' to '{dest}'.");
+                            //Console.WriteLine($"Copied '{src}' to '{dest}'.");
                         }
                         else
                         {
