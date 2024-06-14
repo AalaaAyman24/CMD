@@ -1,42 +1,59 @@
-# Virtual File System Simulator
-Welcome to GitHub repository!
+# Virtual File System Console Application
+
+Welcome to the Virtual File System Console Application! 
 
 ## Overview:
+
 The Virtual File System Simulator project is designed to emulate a basic file system within a virtual disk represented by a file (Disk.txt).This simulator allows users to perform essential file and directory operations similar to those available in a traditional operating system environment.
 
 ## Key Features:
-### 1. Virtual Disk Representation:
-  * The virtual disk is represented by a single file (Disk.txt), with a maximum size limit of 1MB.
-  * The file serves as the storage medium for the simulated file system, encapsulating
-  directories, files, and metadata.
 
-### 2. File System Operations:
-  * **File Creation:** Users can create new files within the virtual file system.
-  * **Directory Creation:** Directories (folders) can be created to organize files hierarchically.
-  * **File Copying:** Files can be duplicated within the file system.
-  * **File Deletion:** Users can delete files from the virtual disk.
-  * **Directory Deletion:** Users can delete directories from the virtual disk.
-  * **File Renaming:** The system supports renaming of files and directories.
-  * **Listing Content:** Users can list the contents of directories.
-  * **Navigating Directory Structure:** Users can traverse through directories.
-    
-### 3. Implementation Details:
-  * **Directory Structure:** The file system uses a simplified directory structure akin to FAT32, with directories containing entries pointing to file metadata (e.g., name, size, location).
-  * **File Allocation Table (FAT):** A basic implementation of a FAT-like structure manages disk space allocation and file location information.
-  * **Metadata Management:** Each file and directory is associated with metadata (e.g., name, size, location) stored within the virtual disk.
+- **help:** Display information about the commands
+- **cls:** Clear the console
+- **quit:** Exit the console
+- **cd:** Change the current default directory
+- **copy:** Copy files to another location
+- **del:** Delete files
+- **md:** Create a directory
+- **rd:** Remove a directory
+- **rename:** Rename a file
+- **type:** Display the contents of a text file
+- **import:** Import a text file from your computer
+- **export:** Export a text file to your computer
 
+## Usage
 
-## Technologies Used:
-* **C#**: Core programming language used for the project.
-* **.NET Framework**: Leveraging .NET for system and file I/O operations.
-* **Console Application**: Project implemented as a command-line interface application.
-* **Visual Studio**: IDE used for development and debugging.
+Once the application is running, you can use the following commands:
 
-## Purpose:
-* The project aims to provide a hands-on learning experience in file system concepts and operations.
-* It offers a simplified yet functional simulation of a file system, enabling users to understand fundamental file management tasks.
-  
-## Additional Information
-For any questions, issues, or suggestions, please feel free to open an issue on GitHub.
+### Console Management
 
-Thank you for using Virtual File System Simulator!
+- **help:** Show available commands.
+- **cls:** Clear the console screen.
+- **quit:** Exit the application.
+
+### Directory Management
+
+- **cd:** Change directory. Usage: `cd [directory_name]`
+- **md:** Create directory. Usage: `md [directory_name]`
+- **rd:** Remove directory. Usage: `rd [directory_name]`
+- **rename:** Rename file or directory. Usage: `rename [old_name] [new_name]`
+- **copy:** Copy files. Usage: `copy [source_file] [destination_file]`
+
+### File Management
+
+- **import:** Import a text file. Usage: `import [file_path]`
+- **export:** Export a text file. Usage: `export [file_name] [destination_path]`
+- **type:** Display file contents. Usage: `type [file_name]`
+- **del:** Delete files. Usage: `del [file_name]`
+
+## Contributing
+
+Contributions are welcome! Fork this repository and submit a pull request. For major changes, please open an issue first to discuss.
+
+## Contact
+
+For questions or feedback, reach out via LinkedIn or email.
+
+Created by Aalaa Ayman
+
+---
