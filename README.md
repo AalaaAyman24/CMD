@@ -57,7 +57,7 @@ Contributions are welcome! Fork this repository and submit a pull request. For m
 
 ## Contact
 
-For questions or feedback, reach out via LinkedIn or email.
+For questions or feedback, reach out via [LinkedIn](https://www.linkedin.com/in/aalaa-ayman-962004253/) or [email](aalaasalah389@gmail.com).
 
 ---
 
